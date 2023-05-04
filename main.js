@@ -34,4 +34,51 @@ function saveIssue(e) {
       assignedTo: issueAssignedTo,
       status: issueStatus
     }
-}
+
+    if (localStorage.getItem('issues') === null) {
+        var issues = [];
+        issues.push(issue);
+        localStorage.setItem('issues', JSON.stringify(issues));
+      } else {
+        var issues = JSON.parse(localStorage.getItem('issues'));
+        issues.push(issue);
+        localStorage.setItem('issues', JSON.stringify(issues));
+      }
+      
+      document.getElementById('issueInputForm').reset();
+     
+      fetchIssues();
+      
+      e.preventDefault(); 
+    }
+    <a href="#" class="btn btn-warning" onclick="setStatusClosed(\''+id+'\')">Close</a>
+    
+    function setStatusClosed (id) {
+      var issues = JSON.parse(localStorage.getItem('issues'));
+      
+      for(var i = 0; i < issues.length; i++) {
+        if (issues[i].id == id) {
+          issues[i].status = "Closed";
+        }
+      }
+        
+      localStorage.setItem('issues', JSON.stringify(issues));
+      
+      fetchIssues();
+    }
+    <a href="#" class="btn btn-danger" onclick="deleteIssue(\''+id+'\')">Delete</a>
+
+    function deleteIssue (id) {
+      var issues = JSON.parse(localStorage.getItem('issues'));
+      
+      for(var i = 0; i < issues.length; i++) {
+        if (issues[i].id == id) {
+          issues.splice(i, 1);
+        }
+      }
+      
+      localStorage.setItem('issues', JSON.stringify(issues));
+      
+      fetchIssues();
+    }
+  }
